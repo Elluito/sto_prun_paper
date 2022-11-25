@@ -1,0 +1,107 @@
+
+    Neural networks have become the \textit{de facto} model for many if not
+    all machine learning applications \cite{lecunDeepLearning2015}, from  image
+    recognition \cite{tanEfficientNetRethinkingModel2020} to  natural language
+    processing \cite{devlinBERTPretrainingDeep2019} and  
+    speech synthesis \cite{oordWaveNetGenerativeModel2016}. This success is
+    reliant on the ever increasing availability of data and computing power
+    that researchers have used to train enormous state-of-the-art models
+    \cite{brownLanguageModelsAre2020}. Due to the environmental and financial
+    concerns \cite{thompsonComputationalLimitsDeep2020} researchers use methods
+    such as Neural network pruning to reduce the computation and memory burden
+    during deployment.
+
+    The most popular method for neural network pruning is \textbf{magnitude
+    pruning}  which despite of its simplicity  it has been proven to be proves to be competitive against more complex pruning
+    strategies across datasets and architectures
+    \cite{guptaComplexityRequiredNeural2022}. Despite that the solution found
+    by Stochastic Gradient Descent at the end of training has the potential of
+    being a global minima \cite{leeGradientDescentOnly2016,luDepthCreatesNo2017,
+    zhouSGDConvergesGlobal2018,kawaguchiDeepLearningPoor2016} in general this
+    is not the case \cite{dingSubOptimalLocalMinima2020}. Inspired by
+    the\mycomment[LUIS]{Here I was thinking on using the original argument we
+    had that was to discover ``core'' connections and ``variable'' connections.
+That is how the idea of stochastic pruning came to be. But I felt that given the
+scope of the paper now introducing such idea is more difficult, maybe if I
+change the tone of the introduction or the motivation}intuition of the Optimal
+Brain Surgeon \cite{hassibiSecondOrderDerivatives1992}
+    where they suggested that an pruning strategy based on a quadratic
+    approximation of the loss function would suggest that the best pruning
+    strategy is no the one that removes the smallest weights but also the one
+    that rescales the weights accordingly. This
+    suggest that when projecting the full dense solution into a constrained
+    space e.g. prune,\hlfix{maybe eliminating the smallest dimensions is not the best
+    strategy.}{This does not make much sense since we are still using magnitude
+pruning but in a noisy model. So we are actually doing the same but on a
+different set of weights we just need motivate this differently}
+
+\vspace{3cm}
+\textbf{Outline of the  introduction}
+
+\begin{enumerate}
+    \item Neural networks are very popular in many areas of machine learning
+    \item The reason that this models are so popular now is due to the increase
+        in data and computation.
+    \item Neural network pruning is a popular option for reducing the computing
+        and memory footprint out of these increasingly large models
+    \item Magnitude pruning is a simple yet effective way of reducing size of
+        neural networks
+    \item In order for a pruning algorithm algorithm to be effective it needs
+        to identify the less relevant weights in the network
+    \item Inspired from the fact that C. elegans worms have a \textbf{core}
+        neural circuit that is common among the whole species and a \textbf{variable}
+        neural circuit that is particular individual, we believe that
+        inspecting differently pruned networks we can identify such core for a
+        particular architecture.
+    \item What we found is that with a small amplitude noise added to a
+        particular solution we can find different pruned solutions that can
+        outperform the orinal solution pruned.
+    \item This stochastic pruning is proved to be an inexpensive alternative
+        to deterministic pruning where without any fine-tuning is capable of
+        finding good solutions for high sparsity regimes.
+    \item We propose an iterative algorithm for obtaining stochastic pruned
+        networks that obtain good performing sparse networks without expensive
+        retraining.
+        
+
+    \item The contributions of this paper are as follows:
+     \begin{itemize}
+         \item We shed light into the phenomena that stochastic pruning is not
+             only feasible but also can outperform deterministic pruning
+             reliably.
+         \item  We characterized this phenomena in terms of its hyperparameters
+             namely the population size $N$ and the noise variance $\sigma$
+
+     \end{itemize}
+
+\end{enumerate}
+    
+
+
+
+
+
+    In this work we use the widely used magnitude pruning and show that injecting small amounts of noise to a well
+    trained network we can obtain pruned networks that  outperform the original
+    ``clean'' model pruned.
+   % Our experiments show how the drop in performance of
+   % the noisy models depends on the number of noisy samples we draw and what are reasons why
+   % this noisy pruned models can outperform deterministic pruning.
+
+    \textbf{Motivation:} The two main question with this phenomena is:
+    Do this stochastic models outperform the deterministic pruning due to the
+    mask they unveil? Or are the weighs themselves that drive the performance
+    gain?
+
+
+
+
+
+
+
+
+
+%    But this success comes with exponential
+%    growth in computation and storage needed for. The most common mechanism for
+%    Neural network pruning has been widely studied in recent years as a way of addressing this issue
+

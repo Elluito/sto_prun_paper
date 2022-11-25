@@ -1,0 +1,89 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+%\usepackage{textcomp}
+\usepackage[english]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{csquotes}
+%\usepackage[T1]{fontenc}
+%\usepackage[sort,square,numbers]{natbib}
+\usepackage[backend=biber,sorting=ynt]{biblatex}
+\addbibresource{Pruning.bib}
+% soul package
+\usepackage{soul}
+
+%## Colors
+\usepackage[dvipsnames]{xcolor}
+% figure support
+\usepackage{import}
+\usepackage{xifthen}
+\pdfminorversion=7
+\usepackage{pdfpages}
+\usepackage{transparent}
+\usepackage{hyperref}
+\newcommand{\incfig}[1]{%
+    \def\svgwidth{\columnwidth}
+    \import{../figures/}{#1.pdf_Tex}
+}
+
+\pdfsuppresswarningpagegroup=1
+\usepackage{todonotes}
+%######## Comments
+\DeclareUnicodeCharacter{2212}{-}
+\newcounter{mycomment}
+\newcommand{\mycomment}[2][]{%
+% initials of the author (optional) + note in the margin
+\refstepcounter{mycomment}{%\setstretch{0.7}
+\todo[color={red!100!green!33},size=\small]{%
+\textbf{Comment [\uppercase{#1}\themycomment]:}~#2}%
+}
+}
+%######## Highlight text to fix
+\makeatletter
+\if@todonotes@disabled
+\newcommand{\hlfix}[2]{#1}
+\else
+\newcommand{\hlfix}[2]{\texthl{#1}\todo{#2}}
+\fi
+\makeatother
+%Usage
+% Example \hlfix{wrong text}{fix text}~continues here.
+%
+%
+
+\setlength{\marginparwidth}{4cm}
+\usepackage{vmargin}
+\setpapersize{A4}
+\setmargins{1.5cm}       % margen izquierdo
+{1.5cm}                        % margen superior
+{12.5cm}                      % anchura del texto
+{23.42cm}                    % altura del texto
+{10pt}                           % altura de los encabezados
+{1cm}                           % espacio entre el texto y los encabezados
+{0pt}                             % altura del pie de página
+{2cm}  
+
+
+
+\title{Stochastic pruning of Convnets with (arbitrarily?) small degradation
+results}
+\author{Luis Alfredo Avendaño Muñoz}
+\date{\today}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+ 
+
+\end{abstract}
+\section{Introduction}%
+\label{sec:introduction}
+\input{introduction.tex}
+\section{Experiments}%
+\label{sec:experiments}
+\input{experiments.tex}
+
+% REFERENCES
+%\nocite{*}
+\printbibliography
+%\bibliography{Pruning.bib}
+\end{document}
