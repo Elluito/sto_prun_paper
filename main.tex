@@ -51,6 +51,40 @@
 %    and comment out the line below the next line to turn off comments
 %\usepackage[disable,textsize=tiny]{todonotes}
 \usepackage[textsize=tiny]{todonotes}
+%\DeclareUnicodeCharacter{2212}{-}
+% Defining mycomment
+\newcounter{mycomment}
+\newcommand{\mycomment}[2][]{%
+% initials of the author (optional) + note in the margin
+\refstepcounter{mycomment}{%\setstretch{0.7}
+\todo[color={red!100!green!33}]{%
+\textbf{Comment [\uppercase{#1}\themycomment]:}~#2}%
+}}
+
+
+
+\makeatletter
+\if@todonotes@disabled
+\newcommand{\hlfix}[2]{#1}
+\else
+\newcommand{\hlfix}[2]{\texthl{#1}\todo{#2}}
+\fi
+\makeatother
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% More space in the margins
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\paperwidth=\dimexpr \paperwidth + 6cm\relax
+\oddsidemargin=\dimexpr\oddsidemargin + 3cm\relax
+\evensidemargin=\dimexpr\evensidemargin + 3cm\relax
+\marginparwidth=\dimexpr \marginparwidth + 3cm\relax
+\setlength{\marginparwidth}{ 3cm}
+
+
+
 
 
 % The \icmltitle you define below is probably too long as a header.
@@ -156,7 +190,7 @@ Gross violations will trigger corrections at the camera-ready phase.
 %  REFERENCES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\nocite{langley00}
+%\nocite{*}
 \bibliography{Pruning}
 \bibliographystyle{icml2022}
 
