@@ -30,7 +30,10 @@ Brain Surgeon \cite{hassibiSecondOrderDerivatives1992}
     strategy is no the one that removes the smallest weights but also the one
     that rescales the weights accordingly. This
     suggest that when projecting the full dense solution into a constrained
-    space e.g. prune,\hlfix{maybe eliminating the smallest dimensions is not the best strategy.}{This does not make much sense since we are still using magnitude pruning but in a noisy model. So we are actually doing the same but on a different set of weights we just need motivate this differently}
+    space e.g. prune,\hlfix{maybe eliminating the smallest dimensions is not
+    the best strategy.}{This does not make much sense since we are still using
+magnitude pruning but in a noisy model. So we are actually doing the same but
+on a different set of weights we just need  to motivate this differently}
 
 \vspace{3cm}
 \textbf{Outline of the  introduction}
@@ -66,8 +69,13 @@ Brain Surgeon \cite{hassibiSecondOrderDerivatives1992}
          \item We shed light into the phenomena that stochastic pruning is not
              only feasible but also can outperform deterministic pruning
              reliably.
-         \item  We characterized this phenomena in terms of its hyperparameters
-             namely the population size $N$ and the noise variance $\sigma$
+         %\item  We characterized this phenomena in terms of its hyperparameters namely the population size $N$ and the noise variance $\sigma$
+        \item An iterative stochastic pruning algorithm that achieves minimum
+            accuracy loss without fine tuning
+        \item \hfix{We uncover the existence of "motifs" in parameter heavy
+                layers after massively pruning them, showing that pruning
+                improves the explainability of networks.}{ I think I need
+            to rephrase this }
 
      \end{itemize}
 
