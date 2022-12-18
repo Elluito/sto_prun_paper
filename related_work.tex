@@ -1,56 +1,58 @@
+While there are a variety of approaches to compressing neural networks, such as novel design of micro-architectures [15, 16, 17], dimensionality reduction of network parameters [18, 19], and training of dynamic sparse networks [20, 21, 22], in this work we will focus on neural network pruning.
+
+
 
 Neural network pruning can be grouped into \textit{After training pruning}
 and  \textit{Pre-training } 
-Also in this section we mention \textit{dynamical sparse training} were the
-network's
-connectivity  is also updated during training to obtain a good performing sparse network.
+% Also in this section we mention \textit{dynamical sparse training} were the
+% network's
+% connectivity  is also updated during training to obtain a good performing sparse network.
 
-\textbf{Prunning After Training:} These methods prune a pre-trained network.
+\textbf{Pruning After Training:} These methods prune a pre-trained network.
 Each method has a different importance score to detect unimportant weights.
-The most simple one is the magnitude of a weight
-\cite{hanLearningBothWeights2015a,hanDeepCompressionCompressing2016a} where
+The most simple is the magnitude of a weight
+\cite{hanLearningBothWeights2015a,hanDeepCompressionCompressing2016a} where the
 weights with the lowest magnitude are deemed as
- unnecessary. However this method can remove important low magnitude weights.
- Some methods use the first order (i.e. gradient information) Taylor expansion
- coefficients of the loss function\cite{karninsimpleprocedurepruning1990a,mozerskeletonizationtechniquetrimming1988}.
+ unnecessary. However, this method can remove important low magnitude weights.
+ Some methods use the first order Taylor expansion coefficients of the  loss function (i.e. gradient information)  as importance scores for pruning. \cite{karninsimpleprocedurepruning1990a,mozerskeletonizationtechniquetrimming1988}.
  Hessian-based methods measure the importance of weights as the effect they
- have in the second order approximation of the final loss function 
+ have in the second-order approximation of the final loss function 
  \cite{hassibiSecondOrderDerivatives1992,lecunOptimalBrainDamage1989,
  hassibiOptimalBrainSurgeon1993,singhWoodFisherEfficientSecondOrder2020}.
- Many of this methods require a fine-tuning phase to mitigate the accuracy
+ Many of these methods require a fine-tuning phase to mitigate the accuracy
  drop.
 
 
 
 
-\textbf{Pre-Training Pruning:} This family of algorithms prune a
-network before training takes place on the randomly initialized weights. SynFlow
-\cite{tanakaPruningNeuralNetworks2020a} uses a measure based on path-norm
+\textbf{Pre-Training Pruning:} This family of algorithms prunes a
+network before training takes place on randomly initialised weights. SynFlow
+\cite{tanakaPruningNeuralNetworks2020a} uses a measure based on path norm
 \cite{neyshaburPathSGDPathNormalizedOptimization2015} that the authors call
-synaptic flow which they prove avoids layer-collapse, this method do not use
+synaptic flow, which they prove avoids layer collapse, this method does not use
 data for pruning. Gradient Signal Preservation
-(GrasP) \cite{wangPickingWinningTickets2020} prunes the randomly initialized network such that the
-gradient flow signal is preserved through the network.
+(GrasP) \cite{wangPickingWinningTickets2020} prunes the randomly initialised network so that the
+gradient flow signal is preserved throughout the network.
 Lastly, Single-Shot Network Pruning Based on Connection Sensitivity
-\cite{leeSNIPSINGLESHOTNETWORK2018} add parameters that represent the
-connections (but not the weight) between neurons and uses the approximate
+\cite{leeSNIPSINGLESHOTNETWORK2018} add parameters that represent
+connections (but not weight) between neurons and uses the approximate
 gradient of the loss function with respect to the new parameters as the
 saliency score for pruning. 
 
-\textbf{Dynamical Sparse Training:} In this category methods instead of
-pruning once and leaving the mask static, they alter the mask during the
-course of training which results in similar or better performance than the
-dense counterparts.
-This idea was first used in Sparse
-Evolutionary Training (SET) \cite{mocanuScalableTrainingArtificial2018a} were
-they initialized the network in a sparse manner and after
-each epoch  a fraction of the weights closest to zero is pruned and the same
-number of weights is grown back randomly.
-Sparse Networks from Scratch (SNFS) \cite{dettmersSparseNetworksScratch2019}
-regrowth method is based on the momentum of each weight, reallocating the weights from less efficient layers and redistribute them to weight-efficient layers.
-Rigging the Lottery (RigL)  \cite{evciRiggingLotteryMaking2020}h strategy is to use the
-"would be" gradients of the pruned parameters as the indicator for
-incorporating new weights to the network. Deep R
-\cite{bellecDeepRewiringTraining2018} uses a probabilistic framework for
-regrowing and pruning connections on the network alongside to adding a random
-walk to SGD in parameter space.
+% \textbf{Dynamical Sparse Training:} In this category methods instead of
+% pruning once and leaving the mask static, they alter the mask during the
+% course of training which results in similar or better performance than the
+% dense counterparts.
+% This idea was first used in Sparse
+% Evolutionary Training (SET) \cite{mocanuScalableTrainingArtificial2018a} were
+% they initialized the network in a sparse manner and after
+% each epoch  a fraction of the weights closest to zero is pruned and the same
+% number of weights is grown back randomly.
+% Sparse Networks from Scratch (SNFS) \cite{dettmersSparseNetworksScratch2019}
+% regrowth method is based on the momentum of each weight, reallocating the weights from less efficient layers and redistribute them to weight-efficient layers.
+% Rigging the Lottery (RigL)  \cite{evciRiggingLotteryMaking2020}h strategy is to use the
+% "would be" gradients of the pruned parameters as the indicator for
+% incorporating new weights to the network. Deep R
+% \cite{bellecDeepRewiringTraining2018} uses a probabilistic framework for
+% regrowing and pruning connections on the network alongside to adding a random
+% walk to SGD in parameter space.
