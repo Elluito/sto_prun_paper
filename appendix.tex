@@ -1,23 +1,22 @@
-\section{ Appendix}
+\section{Appendix}
 \subsection{Analysis of Stochastic Pruning per layer}
 
 It could be the case that  stochastic pruning does not affect  all layers equally and the experiments show here  will tell us, which layers are more affected by stochastic pruning and if we should normalise the noise amplitude for each layer separately, given the distribution of their weight's magnitude
 
-\begin{figure}[htpb]
-    \begin{subfigure}{\textwidth}
-    \includegraphics[width=0.4\textwidth]{supplementary/test_pr_0.82.pdf}
+\begin{figure}[tb]
+    \begin{subfigure}{}
+        \centering
+    \includegraphics[width=0.2\textwidth]{supplementary/test_pr_0.82.pdf}
     \caption{Remaining and pruned weights for pruning rate 82\%}
     \label{subfig:pr_0.82}
     \end{subfigure}
-    \hfill
-    \begin{subfigure}{\textwidth}
-    \includegraphics[width=0.4\textwidth]{supplementary/test_pr_0.5.pdf}
+    \begin{subfigure}{}
+    \includegraphics[width=0.2\textwidth]{supplementary/test_pr_0.5.pdf}
     \label{subfig:pr_0.5}
     \caption{Remaining and pruned weights for pruning rate 50\%}
     \end{subfigure}
-    \hfill
-    \begin{subfigure}{\textwidth}
-    \includegraphics[width=0.4\textwidth]{supplementary/test_pr_0.95.pdf}
+    \begin{subfigure}{}
+    \includegraphics[width=0.2\textwidth]{supplementary/test_pr_0.95.pdf}
     \caption{Remaining and pruned weights for pruning rate 95\%}
     \label{subfig:pr_0.95}
     \end{subfigure}

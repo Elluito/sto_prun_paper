@@ -12,26 +12,33 @@
     during deployment.
 
     The most popular method for neural network pruning is \textbf{magnitude
-    pruning}  which despite of its simplicity  it has been proven to be proves to be competitive against more complex pruning
+    pruning}  which despite of its simplicity  it has been proven to be competitive against more complex pruning
     strategies across datasets and architectures
     \cite{guptaComplexityRequiredNeural2022}. Despite that the solution found
     by Stochastic Gradient Descent at the end of training has the potential of
     being a global minima \cite{leeGradientDescentOnly2016,luDepthCreatesNo2017,
     zhouSGDConvergesGlobal2018,kawaguchiDeepLearningPoor2016} in general this
     is not the case \cite{dingSubOptimalLocalMinima2020}. Inspired by
-    the\mycomment[LUIS]{Here I was thinking on using the original argument we
+    the
+
+    \mycomment[LUIS]{Here I was thinking on using the original argument we
     had that was to discover ``core'' connections and ``variable'' connections.
 That is how the idea of stochastic pruning came to be. But I felt that given the
 scope of the paper now introducing such idea is more difficult, maybe if I
-change the tone of the introduction or the motivation} intuition of the Optimal
+change the tone of the introduction or the motivation}
+
+
+
+
+intuition of the Optimal
 Brain Surgeon \cite{hassibiSecondOrderDerivatives1992}
     where they suggested that an pruning strategy based on a quadratic
     approximation of the loss function would suggest that the best pruning
     strategy is no the one that removes the smallest weights but also the one
     that rescales the weights accordingly. This
     suggest that when projecting the full dense solution into a constrained
-    space e.g. prune,\hlfix{maybe eliminating the smallest dimensions is not
-    the best strategy.}{This does not make much sense since we are still using
+    space e.g. prune, maybe eliminating the smallest dimensions is not
+    the best strategy.\todo{This does not make much sense since we are still using
 magnitude pruning but in a noisy model. So we are actually doing the same but
 on a different set of weights we just need  to motivate this differently}
 
@@ -72,9 +79,9 @@ on a different set of weights we just need  to motivate this differently}
          %\item  We characterized this phenomena in terms of its hyperparameters namely the population size $N$ and the noise variance $\sigma$
         \item An iterative stochastic pruning algorithm that achieves minimum
             accuracy loss without fine tuning
-        \item \hfix{We uncover the existence of ``motifs'' in parameter heavy
+        \item We uncover the existence of ``motifs'' in parameter heavy
                 layers after massively pruning them, showing that pruning
-                improves the explainability of networks.}{ I think I need
+                improves the explainability of networks.\todo{I think I need
             to rephrase this }
 
      \end{itemize}
