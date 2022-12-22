@@ -1,25 +1,25 @@
 While there are a variety of approaches to compressing neural networks, such
-as novel design of efficient architectures
+as the novel design of efficient architectures
 \cite{tanEfficientNetRethinkingModel2019,
 howardMobileNetsEfficientConvolutional2017,
-sandlerMobileNetV2InvertedResiduals2019}, optimization in a random subspace of
+sandlerMobileNetV2InvertedResiduals2019}, optimisation in a random subspace of
 the
-parameters space \cite{liMeasuringIntrinsicDimension2022}, and training of dynamic sparse networks 
+parameter space \cite{liMeasuringIntrinsicDimension2022}, and training of dynamic sparse networks 
 \cite{mocanuScalableTrainingArtificial2018a,bellecDeepRewiringTraining2018,
 evciRiggingLotteryMaking2020,dettmersSparseNetworksScratch2019} , in this work we will focus on neural network pruning.
 Neural network pruning can be grouped into \textit{After training pruning}
-and  \textit{Pre-training } 
+and \textit{Pre-training } 
 % Also in this section we mention \textit{dynamical sparse training} were the
 % network's
 % connectivity  is also updated during training to obtain a good performing sparse network.
 
-\textbf{Pruning After Training:} These methods prune a pre-trained network.
+\textbf{Pruning After Training:} These methods prune a pretrained network.
 Each method has a different importance score to detect unimportant weights.
 The most simple is the magnitude of a weight
 \cite{hanLearningBothWeights2015a,hanDeepCompressionCompressing2016a} where the
 weights with the lowest magnitude are deemed as
- unnecessary. However, this method can remove important low magnitude weights.
- Some methods use the first order Taylor expansion coefficients of the  loss function (i.e. gradient information)  as importance scores for pruning. \cite{karninsimpleprocedurepruning1990a,mozerskeletonizationtechniquetrimming1988}.
+ unnecessary. However, this method can remove important low-magnitude weights.
+ Some methods use the first-order Taylor expansion coefficients of the loss function (i.e. gradient information)  as importance scores for pruning. \cite{karninsimpleprocedurepruning1990a,mozerSkeletonizationTechniqueTrimming1988}.
  Hessian-based methods measure the importance of weights as the effect they
  have in the second-order approximation of the final loss function 
  \cite{hassibiSecondOrderDerivatives1992,lecunOptimalBrainDamage1989,
@@ -31,7 +31,7 @@ weights with the lowest magnitude are deemed as
 
 
 \textbf{Pre-Training Pruning:} This family of algorithms prunes a
-network before training takes place on randomly initialised weights. SynFlow
+network before training on randomly initialised weights. SynFlow
 \cite{tanakaPruningNeuralNetworks2020a} uses a measure based on path norm
 \cite{neyshaburPathSGDPathNormalizedOptimization2015} that the authors call
 synaptic flow, which they prove avoids layer collapse, this method does not use

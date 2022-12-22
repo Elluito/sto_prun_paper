@@ -1,39 +1,37 @@
 
     Neural networks have become the \textit{de facto} approach for many if not
     all machine learning applications \cite{lecunDeepLearning2015}, from  image
-    recognition \cite{dengImageNetLargescaleHierarchical2009} to  natural language
+    recognition \cite{dengImageNetLargescaleHierarchical2009} to natural language
     processing \cite{devlinBERTPretrainingDeep2019} and  
     speech synthesis \cite{oordWaveNetGenerativeModel2016}.
     Given their heavy reliance on increasing computing and memory
     \cite{brownLanguageModelsAre2020,thompsonComputationalLimitsDeep2020}
-    methods for compressing networks but that retain performance has become
+    methods for compressing networks, but that retain performance has become
     increasingly popular.
 
-Neural Network pruning is a popular compression technique that consist in the
-removal of weights while retaining good performance.
+Neural network pruning is a popular compression technique that consists of removing weights while retaining good performance.
 Most approaches currently used try to identify a subset of weights from a
-pretrained reference network either via a saliency criteria
+pretrained reference network either by saliency criteria
 \cite{mozerSkeletonizationTechniqueTrimming1988,
 hassibiSecondOrderDerivatives1992,lecunOptimalBrainDamage1989} or by
-regularization during training
+regularisation during training
 \cite{chauvinBackPropagationAlgorithmOptimal1988,
-carreira-perpinanLearningCompressionAlgorithmsNeural2018}. All of these
-approaches, however, need several expensive prune-retrain cycles and heuristic
-design decisions with extra hyperparameters making it difficult to adapt them
-to new architectures and task.
+carreira-perpinanLearningCompressionAlgorithmsNeural2018}. However, all of these approaches require several expensive prune-retrain cycles and heuristic
+design decisions with extra hyperparameters, making it difficult to adapt them
+to new architectures and tasks.
 
-In this paper we propose a simple pruning procedure that do not need
-fine-tuning for retaining accuracy. Our method, named \textit{stochastic
-pruning}, uses only inference and stochastic perturbation of weights in an
+In this paper, we propose a simple pruning procedure that does not need
+fine-tuning to maintain accuracy. Our method, named \textit{stochastic
+pruning}, uses only inference and stochastic perturbation of the weights in an
 iterative manner.
-Our contributions are:
+Our contributions are as follows:
      \begin{itemize}
          \item We shed light into the phenomena that stochastic pruning is not
-             only feasible but also can outperform deterministic pruning
+             only feasible but can also outperform deterministic pruning
              reliably.
          %\item  We characterized this phenomena in terms of its hyperparameters namely the population size $N$ and the noise variance $\sigma$
         \item An iterative stochastic pruning algorithm that achieves minimum
-            accuracy loss without fine tuning
+            accuracy loss without fine-tuning
 
         \item We uncover the existence of ``motifs'' in parameter heavy
                 layers after massively pruning them, showing that pruning
@@ -42,8 +40,8 @@ Our contributions are:
 
      \end{itemize}
      
-We perform  stochastic pruning on ResNet18, EfficientNet on CIFAR10,CIFAR100,
-and ImageNet. Demostrating that our method is achieves good performance
+We perform stochastic pruning on ResNet18, EfficientNet on CIFAR10,CIFAR100,
+and ImageNet. Demonstrating that our method achieves good performance
 without fine-tuning \todo{Here I should fine-tune deterministic pruning to
 compare to my population algorithm.}
 
@@ -63,17 +61,17 @@ compare to my population algorithm.}
 %compression.
 
 %Magnitude based pruning \cite{hanLearningBothWeights2015a}
-
-    The most popular method for neural network pruning is \textbf{magnitude
-    pruning}  which despite of its simplicity  it has been proven to be competitive against more complex pruning
-    strategies across datasets and architectures
-    \cite{guptaComplexityRequiredNeural2022}. Despite that the solution found
-    by Stochastic Gradient Descent at the end of training has the potential of
-    being a global minima \cite{leeGradientDescentOnly2016,luDepthCreatesNo2017,
-    zhouSGDConvergesGlobal2018,kawaguchiDeepLearningPoor2016} in general this
-    is not the case \cite{dingSubOptimalLocalMinima2020}. Inspired by
-    the
-
+%
+%    The most popular method for neural network pruning is \textbf{magnitude
+%    pruning}  which despite of its simplicity  it has been proven to be competitive against more complex pruning
+%    strategies across data sets and architectures
+%    \cite{guptaComplexityRequiredNeural2022}. Although the solution found
+%    by Stochastic Gradient Descent at the end of training has the potential of
+%    being a global minima \cite{leeGradientDescentOnly2016,luDepthCreatesNo2017,
+%    zhouSGDConvergesGlobal2018,kawaguchiDeepLearningPoor2016} in general this
+%    is not the case \cite{dingSubOptimalLocalMinima2020}. Inspired by
+%    the
+%
     %\mycomment[LUIS]{Here I was thinking on using the original argument we had that was to discover ``core'' connections and ``variable'' connections. That is how the idea of stochastic pruning came to be. But I felt that given the scope of the paper now. Introducing such idea is more difficult, maybe if I change the tone of the introduction or the motivation}
 
 
