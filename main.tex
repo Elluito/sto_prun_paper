@@ -5,9 +5,10 @@
 % Recommended, but optional, packages for figures and better typesetting:
 \usepackage{microtype}
 \usepackage{graphicx}
-\usepackage{subfigure}
+% \usepackage{subfigure}
 \usepackage{booktabs} % for professional tables
-
+\usepackage{enumitem,pifont}
+\usepackage{subcaption}
 % hyperref makes hyperlinks in the resulting PDF.
 % If your build breaks (sometimes temporarily if a hyperlink spans a page)
 % please comment out the following usepackage line and replace
@@ -179,22 +180,33 @@ Gross violations will trigger corrections at the camera-ready phase.
     
 % \end{itemize}
 \input{related_work.tex}
-\section{Methods}
+\section{Neural Network pruning}
+
+
+
+The primary premise neural network pruning is that since neural networks are frequently overparametrized, it is possible to achieve equal performance with a substantially smaller network \cite{reedPruningAlgorithmsaSurvey1993}, while enhancing generalisation.
+To achieve this, then the objective is to find a sparse network that maintains the performance of the overparametrized network. Then
+
+
+
 \subsection{Outline}
 \begin{itemize}
-    \item 
+\item Formal definition of the pruning problem and  what $\epsilon$ means (the degradation of accuracy)
+\item Description of the algorithm
+
+    \item Description of the stochastic pruning decision
 \end{itemize}
+\textbf{Problem definition:}
+
+
 \section{Results}
 \subsection{Outline}
 \begin{itemize}
     \item One shot stochastic pruning outperforms one shot deterministic
         pruning
-    \item Two step stochastic pruning achieves minimal (state-of-the-art?
         competitive with? ) accuracy degradation without fine-tuning.
 \end{itemize}
 
-\subsection{Real Results}%
-\label{sub:real_results}
 \input{results.tex}
 
 \section{Conclusions}
