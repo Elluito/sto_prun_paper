@@ -9,6 +9,13 @@
 \usepackage{booktabs} % for professional tables
 \usepackage{enumitem,pifont}
 \usepackage{subcaption}
+%\usepackage{calrsfs}
+%\DeclareMathAlphabet{\pazocal}{OMS}{zplm}{m}{n}
+%\usepackage{mathrsfs}
+%\usepackage[math-style=TeX, bold-style=TeX]{unicode-math}
+%\setmathfont{XITS Math}
+%\setmathfont[range={\mathscr,\mathbfscr,\mathcal,\mathbfcal}]{Cambria Math}
+%\def\Lcs#1{\texttt{\textbackslash#1}}
 % hyperref makes hyperlinks in the resulting PDF.
 % If your build breaks (sometimes temporarily if a hyperlink spans a page)
 % please comment out the following usepackage line and replace
@@ -78,11 +85,11 @@
 % More space in the margins
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\paperwidth=\dimexpr \paperwidth + 6cm\relax
-\oddsidemargin=\dimexpr\oddsidemargin + 3cm\relax
-\evensidemargin=\dimexpr\evensidemargin + 3cm\relax
-\marginparwidth=\dimexpr \marginparwidth + 3cm\relax
-\setlength{\marginparwidth}{ 3cm}
+%\paperwidth=\dimexpr \paperwidth + 6cm\relax
+%\oddsidemargin=\dimexpr\oddsidemargin + 3cm\relax
+%\evensidemargin=\dimexpr\evensidemargin + 3cm\relax
+%\marginparwidth=\dimexpr \marginparwidth + 3cm\relax
+%\setlength{\marginparwidth}{ 3cm}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -180,40 +187,54 @@ Gross violations will trigger corrections at the camera-ready phase.
     
 % \end{itemize}
 \input{related_work.tex}
-\section{Neural Network pruning}
+\section{Neural Network Pruning}
 
 
 
 The primary premise neural network pruning is that since neural networks are frequently overparametrized, it is possible to achieve equal performance with a substantially smaller network \cite{reedPruningAlgorithmsaSurvey1993}, while enhancing generalisation.
-To achieve this, then the objective is to find a sparse network that maintains the performance of the overparametrized network. Then
+To achieve this, then the objective is to find a sparse network that maintains
+the performance of the over parametrized network. Then following the
+formulation of neural network pruning as an optimization problem of
+\cite{leeSNIPSINGLESHOTNETWORK2018}. Given a dataset $\mathcal{D}=\{(x_i,y_i)\} _{i=1}^{n}$
+and a desired pruning level $\kappa$ (i.e., the number of zero weights) then
+the optimization problem for neural network pruning can be stated as:
+\begin{equation}
+     \centering
+    \begin{aligned}
+          \underset{\mathbf{w,m}}{\min}\quad&  \frac{1}{n} \sum_{i=1}^{n}
+          \ell(F(\mathbf{m}\odot \textbf{w};x_i),y_i)     \\
+    \label{eq:pruning_optim_problem}
+           s.t.\quad & \mathbf{w}\in \mathbb{R}^d\\
+           \quad & \mathbf{m}\in \{0,1\}^d\quad \|\mathbf{m}\|_0 \geq \kappa
+       \end{aligned}
+\end{equation}
+           where $\ell(\cdot)$ is the loss function, $\odot$ is the
+           Hadamard product, $F(\mathbf{m}\odot \textbf{w};x)$ is the output
+           of the neural network given the set of weights and masks, $d$ is the total number of
+           parameters and $\|\cdot\|_0$ is the $L_0$ norm.
+Most of the after-training pruning methods unveil a mask $m$ that is
+static and fine-tune the remaining weights $\tilde{\mathbf{w}}=\mathbf{m}
+\odot\mathbf{w}$ to minimize the accuracy drop, $\epsilon= ACC(\mathbf{w^*})
+-ACC(\mathbf{\tilde{w}})$. This operation is expensive, since gradients need to be calculated for
+the whole training dataset and in general they are calculated in a dense
+manner (even when weights are 0 they are still used in the Backward pass). 
 
 
 
-\subsection{Outline}
-\begin{itemize}
-\item Formal definition of the pruning problem and  what $\epsilon$ means (the degradation of accuracy)
-\item Description of the algorithm
-
-    \item Description of the stochastic pruning decision
-\end{itemize}
-\textbf{Problem definition:}
-
-
-\section{Results}
-\subsection{Outline}
-\begin{itemize}
-    \item One shot stochastic pruning outperforms one shot deterministic
-        pruning
-        competitive with? ) accuracy degradation without fine-tuning.
-\end{itemize}
+In this work we propose an gradient free population based iterative algorithm
+that minimizes $\epsilon$. Our approach is more efficient than fine tuning and
+is very simple to implement.
+\section{Experiments}
+We use a ResNet18 \cite{heDeepResidualLearning2015} trained for 200 epoch with
+SGD, initial learning rate of  0.1, Cosine Annealing schedule with $T_{max}=200$ and batch size of 128.
+We first shed light into fact that in the one-shot no fine-tuning regime
+additive noise with magnitude pruning can reveal good performing subnetworks.
+Based on this we propose an population based algorithm that recovers accuracy
+without fine-tuning
 
 \input{results.tex}
 
-\section{Conclusions}
-\subsection{Outline}
-\begin{itemize}
-    \item 
-\end{itemize}
+%\section{Conclusions}
 
 
 
@@ -252,4 +273,4 @@ To achieve this, then the objective is to find a sparse network that maintains t
 % slightly modified from Prasad Tadepalli's 2007 version which is a
 % lightly changed version of the previous year's version by Andrew
 % Moore, which was in turn edited from those of Kristian Kersting and
-% Codrina Lauth. Alex Smola contributed to the algorithmic style files.
+ Codrina Lauth. Alex Smola contributed to the algorithmic style files.

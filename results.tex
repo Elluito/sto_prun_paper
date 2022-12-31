@@ -1,11 +1,8 @@
 
-\begin{equation}
-\epsilon= \text{accuracy}_{\text{dense deterministic model}}-\text{accuracy}_{\text{pruned model}}
-\end{equation}
-
 \subsection{Unveiling Good Sparse Solutions without Training}
 In this section we show an strange phenomenon that we detect on convolutional networks.  
-We add Gaussian noise to our pretrained network with a set global noise level (standard deviation) $\sigma$ followed by standard Magnitude Pruning \cite{citeNeedCitation200007}. 
+We add Gaussian noise to our pretrained network with a set global noise level
+(standard deviation) $\sigma$ followed by standard Magnitude Pruning \cite{hanLearningBothWeights2015a,hanDeepCompressionCompressing2016a}. 
 \begin{figure}
     \centering
     \includegraphics[width=0.45\textwidth]{figures/stochastic_deterministic_gaussian_sigma_0.002_pr_0.8_batchSize_512_pop_10_t_11-44_test.pdf}
@@ -139,17 +136,75 @@ To measure this, we performed the following two operations.
     \item We transfer the mask from noisy sparse models (pruned by our) to the original noiseless weights\label{operation1}
     \item We transfer the mask from the deterministic case to noisy weights. \label{operation2}
 \end{enumerate}
-If operation \ref{operation1} produces better models than deterministic pruning, it means that \textit{Stochastic Pruning} is capable of unveiling good masks and if operation \ref{operation2} produces better models than deterministic pruning, it means that the weights discovered by \textit{Stochastic Pruning}\todo{Should I mention stochastic pruning with italics and upper case every time or should I write it like that the first time an later just italics?}
+If operation \ref{operation1} produces better models than deterministic pruning, it means that \textit{Stochastic Pruning} is capable of unveiling good masks and if operation \ref{operation2} produces better models than deterministic pruning, it means that the weights discovered by \textit{Stochastic Pruning}
+%\todo{Should I mention stochastic pruning with italics and upper case every time or should I write it like that the first time an later just italics?}
 are better than the original weights. In \cref{fig:pr0.8sigma0.001,fig:pr0.9sigma0.001,fig:pr0.8sigma0.005,fig:pr0.9sigma0.005} is the comparison of the accuracy degradation ($\epsilon$) for 160 noisy models for both operations for pruning rates of 0.8 and 0.9. Two main points can be concluded from these results; 1) \textit{Stochastic Pruning} can reveal a better mask for the original weights, but it is greatly affected by the pruning rate and noise level. 
 Second, the deterministic mask combined with the noisy weights does not outperform the deterministic pruning of the original model for high levels of pruning. And finally, stochastic weights paired with the mask induced by magnitude pruning can reliably outperform deterministic pruning in the one-shot scenario. Note that the noise only reveals good subnetworks, since none of the dense stochastic networks outperforms the original dense network.
+
+
+\begin{algorithm}[!tb]
+   \caption{Population Based Stochastic Pruning}
+   \label{alg:PBRP}
+   \begin{algorithmic}[1]
+    \STATE {\bfseries Input:} Data $\mathcal{D} $, Trained Weights $w^*$, Maximum number of generations $G$, Population $N$
+    \STATE {\bfseries Initialize:} $w_r \gets w^*$,$p_r \gets 0$ 
+    \STATE\COMMENT{Our reference model
+is initialized to the original model}
+   \FOR{$i=1$ {\bfseries to} $G$}
+   \STATE $w^*_g \gets$ Null
+   %\STATE \COMMENT{Best model for the generation}
+   \STATE $p^*_{g} \gets0$ 
+   %\STATE \COMMENT{Best generations performance}
+   \FOR{ j=1  {\bfseries to} $N$}
+   \STATE $w_j \gets w_r+ \mathcal{N}(0,\sigma)$ \COMMENT{Add noise with
+   different amplitude per layer}
+   \STATE $m_j \gets$ MagnitudePruning($w_j$)
+   \STATE $p_j \gets$ Accuracy$(m_j\odot w_j,\mathcal{D})$
+   \IF{$p_j>p^*_g$}% \COMMENT{Select the best individual of this generation}
+
+   \STATE $p^*_g\gets p_j$
+   \STATE $w^*_g \gets w_j$
+   \ENDIF
+   \ENDFOR
+   \IF{$p_g^* > p_r$}
+   \STATE $p_r \gets p^*_g$
+   \STATE $w_r \gets w^*_g$
+   \ENDIF
+   \ENDFOR
+   \OUTPUT $w_r$
+\end{algorithmic}
+\end{algorithm}
 
 \subsection{Population Based Stochastic Pruning}
 With this observation, we propose an iterative population-based algorithm that does not use fine-tuning for performance recovery. Our method is simple and more efficient than fine-tuning.
 It is known that the distribution of the pruning rate per layer plays a significant role in the performance of sparse networks
-\cite{leeLayeradaptiveSparsityMagnitudebased2022}. In this paper we use  the Erdös-Renyí-kernel distribution \cite{evciRiggingLotteryMaking2020} that has been proven to perform well in the random pruning regime\cite{liuUnreasonableEffectivenessRandom2022}. We prune each layer independently from each other.
+\cite{leeLayeradaptiveSparsityMagnitudebased2022}. In this paper we use  the Erdös-Renyí-kernel distribution \cite{evciRiggingLotteryMaking2020} that has been proven to perform well in the random pruning regime \cite{liuUnreasonableEffectivenessRandom2022}. We prune each layer independently from each other.
 
 \textbf{Noise level per layer:}
 Since the statistics per layer differ from each other, we decided to use a different noise level ($\sigma$) for each one of them. In \cref{tab:Q50perLayer} are listed the medians of each layer. We decided to set the level of noise to the 10th percentile of the weight magnitude for each layer since we want to affect every layer uniformly.
+In \cref{fig:ValidationAccuracy} is depicted \cref{alg:PBRP} applied to a
+trained ResNet18 and used the validation set as $\mathcal{D}$. The final
+accuracy in the test set for the final weights is 75.6 proving that our method
+generalizes.
+
+
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=\columnwidth]{val_acc_plot.pdf}
+    \caption{Population Based Stochastic pruning results on Validation set for
+    CIFAR10 with ResNet18 }
+    \label{fig:ValidationAccuracy}
+\end{figure}
+
+%\begin{table}[htpb]
+%    \centering
+%    \caption{Results of PBRP}
+%    \label{tab:label}
+%    \begin{tabular}{c|c}
+%    & \\
+%    \end{tabular}
+%\end{table}
 
 
 
@@ -157,26 +212,6 @@ Since the statistics per layer differ from each other, we decided to use a diffe
 
 
 
-
-
-
-
-\begin{algorithm}[tb]
-   \caption{Bubble Sort}
-   \label{alg:example}
-\begin{algorithmic}
-   \STATE {\bfseries Input:} data $x_i$, size $m$
-   \REPEAT
-   \STATE Initialize $noChange = true$.
-   \FOR{$i=1$ {\bfseries to} $m-1$}
-   \IF{$x_i > x_{i+1}$}
-   \STATE Swap $x_i$ and $x_{i+1}$
-   \STATE $noChange = false$
-   \ENDIF
-   \ENDFOR
-   \UNTIL{$noChange$ is $true$}
-\end{algorithmic}
-\end{algorithm}
  
 % We performed One-shot \textit{Stochastic Pruning} 160 times on an trained ResNet18 on CIFAR10 and transfer ed the stochastic mask into the original weights
 

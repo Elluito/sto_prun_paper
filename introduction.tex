@@ -21,29 +21,35 @@ design decisions with extra hyperparameters, making it difficult to adapt them
 to new architectures and tasks.
 
 In this paper, we propose a simple pruning procedure that does not need
-fine-tuning to maintain accuracy. Our method, named \textit{stochastic
-pruning}, uses only inference and stochastic perturbation of the weights in an
+fine-tuning to maintain accuracy. Our method, named \textit{Population Based
+            Stochastic}, uses only inference and stochastic perturbation of the weights in an
 iterative manner.
 Our contributions are as follows:
      \begin{itemize}
-         \item We shed light into the phenomena that stochastic pruning is not
-             only feasible but can also outperform deterministic pruning
-             reliably.
+         \item We find that small amplitude noise unveils good performing
+             networks that outperform deterministic pruning in a one-shot no
+             fine-tune set-up.
          %\item  We characterized this phenomena in terms of its hyperparameters namely the population size $N$ and the noise variance $\sigma$
-        \item An iterative stochastic pruning algorithm that achieves minimum
-            accuracy loss without fine-tuning
+        \item  We propose  \textit{Population Based
+            Stochastic Pruning}, a simple iterative algorithm that minimizes the accuracy loss without
+            fine-tuning. This makes our algorithm efficient and simple to
+            implement while being competitive against the traditional
+            pruning-fine-tune schedule.
 
-        \item We uncover the existence of ``motifs'' in parameter heavy
-                layers after massively pruning them, showing that pruning
-                improves the explainability (clusterability) of
-                networks.\todo{Still not sure about this}
+
+%        \item We uncover the existence of ``motifs'' in parameter heavy
+%                layers after massively pruning them, showing that pruning
+%                improves the explainability (clusterability) of
+%                networks.\todo{Still not sure about this}
 
      \end{itemize}
      
-We perform stochastic pruning on ResNet18, EfficientNet on CIFAR10,CIFAR100,
-and ImageNet. Demonstrating that our method achieves good performance
-without fine-tuning \todo{Here I should fine-tune deterministic pruning to
-compare to my population algorithm.}
+We test our algorithm on ResNet18, EfficientNet on CIFAR10,CIFAR100,
+and ImageNet.
+
+%Demonstrating that our method achieves good performance
+%without fine-tuning %\todo{Here I should fine-tune deterministic pruning to
+%compare to my population algorithm.}
 
 %This paper is 
 
