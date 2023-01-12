@@ -27,7 +27,7 @@
 \newcommand{\theHalgorithm}{\arabic{algorithm}}
 
 % Use the following line for the initial blind version submitted for review:
-\usepackage{icml2022}
+\usepackage[accepted]{icml2022}
 
 % If accepted, instead use the following line for the camera-ready submission:
 % \usepackage[accepted]{icml2022}
@@ -103,8 +103,7 @@
 \begin{document}
 
 \twocolumn[
-\icmltitle{Submission and Formatting Instructions for \\
-           International Conference on Machine Learning (ICML 2022)}
+\icmltitle{Population-Based Stochastic Pruning: How Noise can reveal good sparse Networks}
 
 % It is OKAY to include author information, even for blind
 % submissions: the style file will automatically remove it for you
@@ -122,31 +121,32 @@
 \icmlsetsymbol{equal}{*}
 
 \begin{icmlauthorlist}
-\icmlauthor{Firstname1 Lastname1}{equal,yyy}
-\icmlauthor{Firstname2 Lastname2}{equal,yyy,comp}
-\icmlauthor{Firstname3 Lastname3}{comp}
-\icmlauthor{Firstname4 Lastname4}{sch}
-\icmlauthor{Firstname5 Lastname5}{yyy}
-\icmlauthor{Firstname6 Lastname6}{sch,yyy,comp}
-\icmlauthor{Firstname7 Lastname7}{comp}
-%\icmlauthor{}{sch}
-\icmlauthor{Firstname8 Lastname8}{sch}
-\icmlauthor{Firstname8 Lastname8}{yyy,comp}
-%\icmlauthor{}{sch}
+\icmlauthor{Luis Alfredo Avendaño-Muñoz}{yyy}
+\icmlauthor{Nabi Omidvar}{yyy}
+\icmlauthor{Netta Cohen}{yyy}
+% \icmlauthor{Firstname4 Lastname4}{sch}
+% \icmlauthor{Firstname5 Lastname5}{yyy}
+% \icmlauthor{Firstname6 Lastname6}{sch,yyy,comp}
+% \icmlauthor{Firstname7 Lastname7}{comp}
+% %\icmlauthor{}{sch}
+% \icmlauthor{Firstname8 Lastname8}{sch}
+% \icmlauthor{Firstname8 Lastname8}{yyy,comp}
+% %\icmlauthor{}{sch}
 %\icmlauthor{}{sch}
 \end{icmlauthorlist}
 
-\icmlaffiliation{yyy}{Department of XXX, University of YYY, Location, Country}
-\icmlaffiliation{comp}{Company Name, Location, Country}
-\icmlaffiliation{sch}{School of ZZZ, Institute of WWW, Location, Country}
+\icmlaffiliation{yyy}{Engineering and Physical Science School, School of Computing, University of Leeds, Leeds, United Kingdom}
+%\icmlaffiliation{comp}{Company Name, Location, Country}
+%\icmlaffiliation{sch}{School of Computing}
 
-\icmlcorrespondingauthor{Firstname1 Lastname1}{first1.last1@xxx.edu}
-\icmlcorrespondingauthor{Firstname2 Lastname2}{first2.last2@www.uk}
+
+\icmlcorrespondingauthor{Luis Alfredo Avendaño-Muñoz}{sclaam@leeds.ac.uk}
+% \icmlcorrespondingauthor{Firstname2 Lastname2}{first2.last2@www.uk}
 
 % You may provide any keywords that you
 % find helpful for describing your paper; these are used to populate
 % the "keywords" metadata in the PDF but will not be shown in the document
-\icmlkeywords{Machine Learning, ICML}
+\icmlkeywords{Machine Learning,Neural Networks, Pruning, , ICML}
 
 \vskip 0.3in
 ]
@@ -163,9 +163,13 @@
 \printAffiliationsAndNotice{\icmlEqualContribution} % otherwise use the standard text.
 
 \begin{abstract}
-This document provides a basic paper template and submission guidelines.
-Abstracts must be a single paragraph, ideally between 4--6 sentences long.
-Gross violations will trigger corrections at the camera-ready phase.
+
+Neural network pruning has shown that many weights can be safely removed from modern neural networks without compromising accuracy.
+Since then, a variety of pruning techniques have been used, each claiming to be superior to the preceding. Many state-of-the-art (SOTA) strategies used today rely on sophisticated pruning procedures using significance scores, backpropagation feedback, or pruning rules based on heuristics, among other things.
+Here, we propose a pruning algorithm that does not use fine-tuning for accuracy recovery and is simple to implement. We call this algorithm Population-Based Stochastic Pruning.
+We tested our algorithm on ResNet18 with CIFAR10 obtaining 75\% accuracy for a pruning rate of 90\%.
+
+
 \end{abstract}
 
 \section{Introduction}
@@ -191,13 +195,13 @@ Gross violations will trigger corrections at the camera-ready phase.
 
 
 
-The primary premise neural network pruning is that since neural networks are frequently overparametrized, it is possible to achieve equal performance with a substantially smaller network \cite{reedPruningAlgorithmsaSurvey1993}, while enhancing generalisation.
-To achieve this, then the objective is to find a sparse network that maintains
-the performance of the over parametrized network. Then following the
-formulation of neural network pruning as an optimization problem of
+The primary premise of neural network pruning is that, since neural networks are frequently over-parameterized, it is possible to achieve the same performance with a substantially smaller network \cite{reedPruningAlgorithmsaSurvey1993}, while improving generalisation.
+To achieve this, the objective is to find a sparse network that maintains
+the performance of the over-parameterized network. Then we follow the
+formulation of neural network pruning as an optimisation problem of
 \cite{leeSNIPSINGLESHOTNETWORK2018}. Given a dataset $\mathcal{D}=\{(x_i,y_i)\} _{i=1}^{n}$
-and a desired pruning level $\kappa$ (i.e., the number of zero weights) then
-the optimization problem for neural network pruning can be stated as:
+and a desired pruning level $\kappa$ (that is, the number of zero weights),
+the optimisation problem for neural network pruning can be stated as follows:
 \begin{equation}
      \centering
     \begin{aligned}
@@ -211,26 +215,25 @@ the optimization problem for neural network pruning can be stated as:
            where $\ell(\cdot)$ is the loss function, $\odot$ is the
            Hadamard product, $F(\mathbf{m}\odot \textbf{w};x)$ is the output
            of the neural network given the set of weights and masks, $d$ is the total number of
-           parameters and $\|\cdot\|_0$ is the $L_0$ norm.
-Most of the after-training pruning methods unveil a mask $m$ that is
-static and fine-tune the remaining weights $\tilde{\mathbf{w}}=\mathbf{m}
-\odot\mathbf{w}$ to minimize the accuracy drop, $\epsilon= ACC(\mathbf{w^*})
+           parameters and $\|\cdot\|_0$ is the norm $L_0$.
+Most after-training pruning methods reveal a static mask $m$ and fine-tune the remaining weights $\tilde{\mathbf{w}}=\mathbf{m}
+\odot\mathbf{w}$ to minimise the accuracy drop $\epsilon= ACC(\mathbf{w^*})
 -ACC(\mathbf{\tilde{w}})$. This operation is expensive, since gradients need to be calculated for
-the whole training dataset and in general they are calculated in a dense
-manner (even when weights are 0 they are still used in the Backward pass). 
+the whole training dataset, and in general they are calculated in a dense
+manner (even when weights are 0 they are still used in the backward pass). 
 
 
 
-In this work we propose an gradient free population based iterative algorithm
-that minimizes $\epsilon$. Our approach is more efficient than fine tuning and
+In this work, we propose an iterative gradient-free population-based algorithm
+that minimises $\epsilon$. Our approach is more efficient than fine-tuning and
 is very simple to implement.
 \section{Experiments}
 We use a ResNet18 \cite{heDeepResidualLearning2015} trained for 200 epoch with
-SGD, initial learning rate of  0.1, Cosine Annealing schedule with $T_{max}=200$ and batch size of 128.
-We first shed light into fact that in the one-shot no fine-tuning regime
+SGD, initial learning rate of 0.1, cosine annealing schedule with $T_{max}=200$ and batch size of 128.
+First of all, we shed light on the fact that in the one-shot no fine-tuning regime,
 additive noise with magnitude pruning can reveal good performing subnetworks.
-Based on this we propose an population based algorithm that recovers accuracy
-without fine-tuning
+On the basis of this, we propose a population-based algorithm that recovers accuracy
+without fine-tuning.
 
 \input{results.tex}
 

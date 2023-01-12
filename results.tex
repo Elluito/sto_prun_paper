@@ -1,5 +1,5 @@
 
-\subsection{Unveiling Good Sparse Solutions without Training}
+\subsection{Unveiling Good Sparse Solutions without Fine-Tuning}
 In this section we show an strange phenomenon that we detect on convolutional networks.  
 We add Gaussian noise to our pretrained network with a set global noise level
 (standard deviation) $\sigma$ followed by standard Magnitude Pruning \cite{hanLearningBothWeights2015a,hanDeepCompressionCompressing2016a}. 
@@ -11,36 +11,36 @@ We add Gaussian noise to our pretrained network with a set global noise level
     \label{fig:stochastic_versus_deterministic}
 \end{figure}
 
-\begin{table}[!htb]
-    \centering
-    \caption{Median of weight magnitude per layer}
-    \begin{tabular}{|l|l|}
-    \hline
-        \textbf{Layer Name} & \textbf{Median} \\ \hline
-        conv1 & 5.29E-06 \\ \hline
-        layer1.0.conv1 & 3.99E-07 \\ \hline
-        layer1.0.conv2 & 5.41E-03 \\ \hline
-        layer1.1.conv1 & 4.85E-03 \\ \hline
-        layer1.1.conv2 & 4.24E-03 \\ \hline
-        layer2.0.conv1 & 7.91E-03 \\ \hline
-        layer2.0.conv2 & 7.53E-03 \\ \hline
-        layer2.0.shortcut.0 & 1.17E-02 \\ \hline
-        layer2.1.conv1 & 4.71E-03 \\ \hline
-        layer2.1.conv2 & 4.39E-03 \\ \hline
-        layer3.0.conv1 & 7.37E-03 \\ \hline
-        layer3.0.conv2 & 6.74E-03 \\ \hline
-        layer3.0.shortcut.0 & 9.55E-03 \\ \hline
-        layer3.1.conv1 & 5.59E-03 \\ \hline
-        layer3.1.conv2 & 4.07E-03 \\ \hline
-        layer4.0.conv1 & 4.01E-03 \\ \hline
-        layer4.0.conv2 & 2.24E-03 \\ \hline
-        layer4.0.shortcut.0 & 4.41E-03 \\ \hline
-        layer4.1.conv1 & 1.31E-03 \\ \hline
-        layer4.1.conv2 & 7.08E-04 \\ \hline
-        linear & 5.35E-02 \\ \hline
-    \end{tabular}
-    \label{tab:Q50perLayer}
-\end{table}
+% \begin{table}[!htb]
+%     \centering
+%     \caption{Median Weight magnitude per layer}
+%     \begin{tabular}{|l|l|}
+%     \hline
+%         \textbf{Layer Name} & \textbf{Median} \\ \hline
+%         conv1 & 5.29E-06 \\ \hline
+%         layer1.0.conv1 & 3.99E-07 \\ \hline
+%         layer1.0.conv2 & 5.41E-03 \\ \hline
+%         layer1.1.conv1 & 4.85E-03 \\ \hline
+%         layer1.1.conv2 & 4.24E-03 \\ \hline
+%         layer2.0.conv1 & 7.91E-03 \\ \hline
+%         layer2.0.conv2 & 7.53E-03 \\ \hline
+%         layer2.0.shortcut.0 & 1.17E-02 \\ \hline
+%         layer2.1.conv1 & 4.71E-03 \\ \hline
+%         layer2.1.conv2 & 4.39E-03 \\ \hline
+%         layer3.0.conv1 & 7.37E-03 \\ \hline
+%         layer3.0.conv2 & 6.74E-03 \\ \hline
+%         layer3.0.shortcut.0 & 9.55E-03 \\ \hline
+%         layer3.1.conv1 & 5.59E-03 \\ \hline
+%         layer3.1.conv2 & 4.07E-03 \\ \hline
+%         layer4.0.conv1 & 4.01E-03 \\ \hline
+%         layer4.0.conv2 & 2.24E-03 \\ \hline
+%         layer4.0.shortcut.0 & 4.41E-03 \\ \hline
+%         layer4.1.conv1 & 1.31E-03 \\ \hline
+%         layer4.1.conv2 & 7.08E-04 \\ \hline
+%         linear & 5.35E-02 \\ \hline
+%     \end{tabular}
+%     \label{tab:Q50perLayer}
+% \end{table}
 
 
 
@@ -127,6 +127,15 @@ We add Gaussian noise to our pretrained network with a set global noise level
 \end{figure*}
 
 
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=\columnwidth]{val_acc_plot.pdf}
+    \caption{Population-Based Stochastic pruning results on Validation set for
+    CIFAR10 with ResNet18 }
+    \label{fig:ValidationAccuracy}
+\end{figure}
+
+
 In \cref{fig:stochastic_versus_deterministic} we observe that this simple operation, which we call \textit{Stochastic Pruning}, produces newly pruned networks that outperform the deterministic pruning of the original network in a one-shot scenario. 
 
 %In \cref{fig:stochastic_versus_deterministic} we see how this simple operation in a one-shot manner already perform better than vanilla deterministic pruning. 
@@ -143,13 +152,13 @@ Second, the deterministic mask combined with the noisy weights does not outperfo
 
 
 \begin{algorithm}[!tb]
-   \caption{Population Based Stochastic Pruning}
+   \caption{Population-Based Stochastic Pruning}
    \label{alg:PBRP}
    \begin{algorithmic}[1]
     \STATE {\bfseries Input:} Data $\mathcal{D} $, Trained Weights $w^*$, Maximum number of generations $G$, Population $N$
-    \STATE {\bfseries Initialize:} $w_r \gets w^*$,$p_r \gets 0$ 
+    \STATE {\bfseries Initialise:} $w_r \gets w^*$,$p_r \gets 0$ 
     \STATE\COMMENT{Our reference model
-is initialized to the original model}
+is initialised to the original model}
    \FOR{$i=1$ {\bfseries to} $G$}
    \STATE $w^*_g \gets$ Null
    %\STATE \COMMENT{Best model for the generation}
@@ -175,27 +184,18 @@ is initialized to the original model}
 \end{algorithmic}
 \end{algorithm}
 
-\subsection{Population Based Stochastic Pruning}
+\subsection{Population-Based Stochastic Pruning}
 With this observation, we propose an iterative population-based algorithm that does not use fine-tuning for performance recovery. Our method is simple and more efficient than fine-tuning.
-It is known that the distribution of the pruning rate per layer plays a significant role in the performance of sparse networks
-\cite{leeLayeradaptiveSparsityMagnitudebased2022}. In this paper we use  the Erdös-Renyí-kernel distribution \cite{evciRiggingLotteryMaking2020} that has been proven to perform well in the random pruning regime \cite{liuUnreasonableEffectivenessRandom2022}. We prune each layer independently from each other.
+It is well-known that the pruning rate distribution per layer plays an important role in the performance of sparse networks.
+
+\cite{leeLayeradaptiveSparsityMagnitudebased2022}. In this paper we use  the Erdös-Renyí-kernel distribution \cite{evciRiggingLotteryMaking2020} that has been proven to perform well in the random pruning regime \cite{liuUnreasonableEffectivenessRandom2022}. We prune each layer independently of each other.
 
 \textbf{Noise level per layer:}
-Since the statistics per layer differ from each other, we decided to use a different noise level ($\sigma$) for each one of them. In \cref{tab:Q50perLayer} are listed the medians of each layer. We decided to set the level of noise to the 10th percentile of the weight magnitude for each layer since we want to affect every layer uniformly.
-In \cref{fig:ValidationAccuracy} is depicted \cref{alg:PBRP} applied to a
-trained ResNet18 and used the validation set as $\mathcal{D}$. The final
-accuracy in the test set for the final weights is 75.6 proving that our method
-generalizes.
+Since the statistics per layer differ from each other, we decided to use a different noise level ($\sigma$) for each one of them. We decided to set the noise level to the 10th percentile of the weight magnitude for each layer, since we want to affect every layer uniformly.
+\subsection{Results}
 
+We ran \cref{alg:PBRP} for 50 generation with population size of 10 in the validation set of CIFAR10  as $\mathcal{D}$. Note that the pre-trained network is not trained in this set. In \cref{fig:ValidationAccuracy} can be seen the trajectory of the algorithm. The final accuracy in the test set for the final weights is 75.6 proving that our method generalises beyond the validation set.
 
-
-\begin{figure}[htpb]
-    \centering
-    \includegraphics[width=\columnwidth]{val_acc_plot.pdf}
-    \caption{Population Based Stochastic pruning results on Validation set for
-    CIFAR10 with ResNet18 }
-    \label{fig:ValidationAccuracy}
-\end{figure}
 
 %\begin{table}[htpb]
 %    \centering

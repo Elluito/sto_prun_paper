@@ -19,7 +19,7 @@ The most simple is the magnitude of a weight
 \cite{hanLearningBothWeights2015a,hanDeepCompressionCompressing2016a} where the
 weights with the lowest magnitude are deemed as
  unnecessary. However, this method can remove important low-magnitude weights.
- Some methods use the first-order Taylor expansion coefficients of the loss function (i.e. gradient information)  as importance scores for pruning. \cite{karninsimpleprocedurepruning1990a,mozerSkeletonizationTechniqueTrimming1988}.
+ Some methods use the first-order Taylor expansion coefficients of the loss function (i.e. gradient information) as importance scores for pruning. \cite{karninsimpleprocedurepruning1990a,mozerSkeletonizationTechniqueTrimming1988}.
  Hessian-based methods measure the importance of weights as the effect they
  have in the second-order approximation of the final loss function 
  \cite{hassibiSecondOrderDerivatives1992,lecunOptimalBrainDamage1989,
@@ -32,7 +32,7 @@ weights with the lowest magnitude are deemed as
 
 \textbf{Pre-Training Pruning:} This family of algorithms prunes a
 network before training on randomly initialised weights. SynFlow
-\cite{tanakaPruningNeuralNetworks2020a} uses a measure based on path norm
+\cite{tanakaPruningNeuralNetworks2020a} uses a measure based on the path norm
 \cite{neyshaburPathSGDPathNormalizedOptimization2015} that the authors call
 synaptic flow, which they prove avoids layer collapse, this method does not use
 data for pruning. Gradient Signal Preservation
